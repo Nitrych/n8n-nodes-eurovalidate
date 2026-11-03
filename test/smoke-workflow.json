@@ -1,0 +1,51 @@
+{
+  "name": "EuroValidate smoke",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "11111111-1111-1111-1111-111111111111",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "resource": "vat",
+        "operation": "validate",
+        "vatNumber": "NL 8206.46660.B01",
+        "vatOptions": {}
+      },
+      "id": "22222222-2222-2222-2222-222222222222",
+      "name": "Validate VAT",
+      "type": "n8n-nodes-eurovalidate.euroValidate",
+      "typeVersion": 1,
+      "position": [250, 0],
+      "credentials": {
+        "euroValidateApi": { "id": "smoke-cred", "name": "EuroValidate smoke" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "company",
+        "operation": "getByLei",
+        "lei": "724500PMK2A2M1SQQ228"
+      },
+      "id": "33333333-3333-3333-3333-333333333333",
+      "name": "Company by LEI",
+      "type": "n8n-nodes-eurovalidate.euroValidate",
+      "typeVersion": 1,
+      "position": [500, 0],
+      "credentials": {
+        "euroValidateApi": { "id": "smoke-cred", "name": "EuroValidate smoke" }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": { "main": [[{ "node": "Validate VAT", "type": "main", "index": 0 }]] },
+    "Validate VAT": { "main": [[{ "node": "Company by LEI", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": {},
+  "id": "smoke-wf"
+}

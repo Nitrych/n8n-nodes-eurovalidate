@@ -1,0 +1,59 @@
+{
+  "name": "n8n-nodes-eurovalidate",
+  "version": "0.1.0",
+  "description": "n8n community node for EuroValidate: validate EU/UK/NO/CH/AU VAT numbers (with registered name and address), IBANs and EORI numbers, and look up company records by LEI or VAT number \u2014 with cached answers when VIES is down.",
+  "license": "MIT",
+  "homepage": "https://eurovalidate.com/n8n-vat-validation.html",
+  "keywords": [
+    "n8n-community-node-package",
+    "vat",
+    "vies",
+    "vat-validation",
+    "iban",
+    "eori",
+    "lei",
+    "gleif",
+    "eurovalidate"
+  ],
+  "author": {
+    "name": "EuroValidate",
+    "email": "support@eurovalidate.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nitrych/n8n-nodes-eurovalidate.git"
+  },
+  "engines": {
+    "node": ">=20.15"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/EuroValidateApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/EuroValidate/EuroValidate.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "0.55.4",
+    "typescript": "5.9.3"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
