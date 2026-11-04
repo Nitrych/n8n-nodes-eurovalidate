@@ -2,6 +2,7 @@
 # Publish n8n-nodes-eurovalidate to npm (run by the founder; needs `npm login` once).
 #   integrations/n8n/publish.sh            # lint + build + publish current package.json version
 # Bump the version in package.json first (npm version patch|minor) — npm refuses to re-publish a version.
+# npm 2FA with a security key needs an interactive terminal (browser approval) — run this in Terminal, not via a non-TTY wrapper.
 set -euo pipefail
 cd "$(dirname "$0")"
 [ -d node_modules ] || npm ci --silent

@@ -1,0 +1,41 @@
+name: Publish to npm (provenance)
+
+# n8n Cloud verification requires packages to be published from GitHub Actions
+# with a provenance statement (mandatory since 2026-05-01). This workflow lives
+# in the public mirror repo (Nitrych/n8n-nodes-eurovalidate, synced from the
+# monorepo's integrations/n8n via scripts/sync_n8n_repo.sh).
+#
+# Auth: npm Trusted Publishing — configure on npmjs.com → package → Settings →
+# Trusted Publisher → GitHub Actions: owner Nitrych, repo n8n-nodes-eurovalidate,
+# workflow release.yml. No NPM_TOKEN needed; 2FA is bypassed for CI publishes.
+#
+# Run: Actions → "Publish to npm (provenance)" → Run workflow (uses the version
+# in package.json; bump it in the monorepo first, sync the mirror, then run).
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  id-token: write   # provenance / trusted publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install --no-audit --no-fund
+      - run: npm run lint
+      - run: npm run build
+      - name: Refuse to publish an already-published version
+        run: |
+          V=$(node -p "require('./package.json').version")
+          if npm view "n8n-nodes-eurovalidate@$V" version >/dev/null 2>&1; then
+            echo "version $V already on npm — bump package.json first"; exit 1; fi
+      - run: npm publish --access public --provenance
