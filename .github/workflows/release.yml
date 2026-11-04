@@ -30,6 +30,10 @@ jobs:
         with:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
+      # Trusted publishing (OIDC) needs npm >= 11.5.1; setup-node ships npm 10.x
+      # with Node 22, and an old npm silently falls back to an unauthenticated
+      # PUT that the registry answers with 404.
+      - run: npm install -g npm@latest && npm --version
       - run: npm install --no-audit --no-fund
       - run: npm run lint
       - run: npm run build
